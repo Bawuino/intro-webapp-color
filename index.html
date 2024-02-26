@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Color RGB</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <h5 class="card-header bg-primary text-white">Selector de Color RGB</h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="colorPicker">Seleccionar Color:</label>
+                    <input type="color" id="colorPicker" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="redInput">Rojo:</label>
+                            <input type="number" class="form-control" id="redInput" min="0" max="255" value="0">
+                            <input type="range" class="form-control-range mt-2" id="redRange" min="0" max="255" value="0">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="greenInput">Verde:</label>
+                            <input type="number" class="form-control" id="greenInput" min="0" max="255" value="0">
+                            <input type="range" class="form-control-range mt-2" id="greenRange" min="0" max="255" value="0">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="blueInput">Azul:</label>
+                            <input type="number" class="form-control" id="blueInput" min="0" max="255" value="0">
+                            <input type="range" class="form-control-range mt-2" id="blueRange" min="0" max="255" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div id="colorBox" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Obtener elementos del DOM
+        const redInput = document.getElementById('redInput');
+        const greenInput = document.getElementById('greenInput');
+        const blueInput = document.getElementById('blueInput');
+        const redRange = document.getElementById('redRange');
+        const greenRange = document.getElementById('greenRange');
+        const blueRange = document.getElementById('blueRange');
+        const colorPicker = document.getElementById('colorPicker');
+        const colorBox = document.getElementById('colorBox');
+        
+        // Función para actualizar el color
+        function updateColor() {
+            let red = parseInt(redInput.value);
+            let green = parseInt(greenInput.value);
+            let blue = parseInt(blueInput.value);
+            
+            // Actualizar color de la caja de visualización
+            colorBox.style.backgroundColor = `rgb(${red},${green},${blue})`;
+            
+            // Actualizar el valor del selector de color
+            colorPicker.value = `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+        }
+        
+        // Convertir decimal a hexadecimal
+        function toHex(decimal) {
+            const hex = decimal.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }
+        
+        // Event listeners para los recuadros de entrada de números
+        redInput.addEventListener('input', function() {
+            redRange.value = redInput.value;
+            updateColor();
+        });
+        greenInput.addEventListener('input', function() {
+            greenRange.value = greenInput.value;
+            updateColor();
+        });
+        blueInput.addEventListener('input', function() {
+            blueRange.value = blueInput.value;
+            updateColor();
+        });
+        
+        // Event listeners para los deslizadores
+        redRange.addEventListener('input', function() {
+            redInput.value = redRange.value;
+            updateColor();
+        });
+        greenRange.addEventListener('input', function() {
+            greenInput.value = greenRange.value;
+            updateColor();
+        });
+        blueRange.addEventListener('input', function() {
+            blueInput.value = blueRange.value;
+            updateColor();
+        });
+        
+        // Event listener para el picker de color
+        colorPicker.addEventListener('input', function() {
+            const hexColor = colorPicker.value.substring(1); // Eliminar el #
+            redInput.value = parseInt(hexColor.substring(0, 2), 16);
+            greenInput.value = parseInt(hexColor.substring(2, 4), 16);
+            blueInput.value = parseInt(hexColor.substring(4, 6), 16);
+            redRange.value = redInput.value;
+            greenRange.value = greenInput.value;
+            blueRange.value = blueInput.value;
+            updateColor();
+        });
+        
+        // Llamar a la función updateColor inicialmente para sincronizar los valores
+        updateColor();
+    </script>
+</body>
+</html>
